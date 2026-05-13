@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR流程全景地图与Skill建设蓝图 · L1-L3框架</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f8f9fc;--panel:#ffffff;--text:#1e293b;--text-soft:#475569;--text-mute:#64748b;
+  --accent:#2563eb;--accent-2:#7c3aed;--accent-3:#059669;--warn:#f59e0b;--danger:#ef4444;
+  --border:#e2e8f0;--border-strong:#cbd5e1;
+  --green-bg:#d1fae5;--green-tx:#065f46;
+  --yellow-bg:#fef3c7;--yellow-tx:#92400e;
+  --red-bg:#fee2e2;--red-tx:#991b1b;
+  --blue-bg:#dbeafe;--blue-tx:#1e40af;
+  --shadow:0 4px 16px rgba(15,23,42,.06);
+  --shadow-lg:0 12px 40px rgba(15,23,42,.10);
+}
+html,body{height:100%;font-family:'PingFang SC','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+.deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.slide{position:absolute;inset:0;padding:48px 64px;display:none;flex-direction:column;overflow:auto;animation:fadeIn .4s ease}
+.slide.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:clamp(28px,3.2vw,44px);font-weight:800;letter-spacing:-.5px;margin-bottom:12px;color:var(--text)}
+h2{font-size:clamp(22px,2.4vw,32px);font-weight:700;margin-bottom:8px;color:var(--text)}
+h3{font-size:clamp(16px,1.6vw,20px);font-weight:700;margin-bottom:8px;color:var(--text-soft)}
+.subtitle{font-size:clamp(14px,1.4vw,18px);color:var(--text-mute);margin-bottom:24px;font-weight:500}
+.accent{color:var(--accent);font-weight:600}
+.accent2{color:var(--accent-2);font-weight:600}
+.accent3{color:var(--accent-3);font-weight:600}
+.highlight{background:linear-gradient(120deg,transparent 0%,transparent 50%,#fef3c7 50%,#fef3c7 100%);padding:0 4px}
+.muted{color:var(--text-mute)}
+
+.header-bar{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--border);padding-bottom:14px;margin-bottom:24px}
+.tag{display:inline-block;background:var(--blue-bg);color:var(--blue-tx);padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600}
+.tag-purple{background:#ede9fe;color:#5b21b6}
+.tag-green{background:var(--green-bg);color:var(--green-tx)}
+.tag-orange{background:var(--yellow-bg);color:var(--yellow-tx)}
+
+.grid{display:grid;gap:16px}
+.grid-2{grid-template-columns:1fr 1fr}
+.grid-3{grid-template-columns:1fr 1fr 1fr}
+.grid-4{grid-template-columns:1fr 1fr 1fr 1fr}
+
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow);transition:all .2s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card-body{font-size:13px;color:var(--text-soft);line-height:1.6}
+.card-accent{border-left:4px solid var(--accent)}
+.card-purple{border-left:4px solid var(--accent-2)}
+.card-green{border-left:4px solid var(--accent-3)}
+.card-warn{border-left:4px solid var(--warn)}
+
+table{width:100%;border-collapse:collapse;font-size:clamp(11px,1vw,13px);background:var(--panel);border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+th{background:#f1f5f9;padding:10px 12px;text-align:left;font-weight:700;color:var(--text);border-bottom:2px solid var(--border-strong);font-size:12px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+tr:hover{background:#f8fafc}
+tr:last-child td{border-bottom:none}
+
+.skill-hi{background:var(--green-bg);color:var(--green-tx);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap}
+.skill-mi{background:var(--yellow-bg);color:var(--yellow-tx);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap}
+.skill-lo{background:var(--red-bg);color:var(--red-tx);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap}
+
+code{background:#f1f5f9;color:var(--accent-2);padding:2px 6px;border-radius:4px;font-size:90%;font-family:'SF Mono',Monaco,monospace}
+
+.big-stat{font-size:clamp(40px,5vw,64px);font-weight:800;line-height:1;color:var(--accent)}
+.big-stat-label{font-size:14px;color:var(--text-mute);margin-top:6px;font-weight:500}
+
+.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.95);border:1px solid var(--border);border-radius:32px;padding:8px 16px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-lg);z-index:100;backdrop-filter:blur(10px)}
+.nav button{background:var(--accent);color:#fff;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.nav button:hover{background:#1d4ed8;transform:scale(1.08)}
+.nav button:disabled{background:#cbd5e1;cursor:not-allowed;transform:none}
+.nav-info{font-size:13px;color:var(--text-soft);font-weight:600;min-width:70px;text-align:center}
+
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:200;transition:width .3s}
+
+.cover{text-align:center;align-items:center;justify-content:center;background:linear-gradient(135deg,#e0e7ff 0%,#f0f9ff 50%,#ecfdf5 100%)}
+.cover h1{font-size:clamp(36px,4.5vw,60px);background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px}
+.cover .sub{font-size:clamp(16px,1.8vw,22px);color:var(--text-soft);margin-bottom:32px;max-width:780px;line-height:1.6}
+.cover .meta{font-size:14px;color:var(--text-mute);margin-top:40px}
+
+.pillar{background:var(--panel);border:2px solid var(--border);border-radius:14px;padding:20px;position:relative}
+.pillar.core{border-color:var(--accent)}
+.pillar.strategy{border-color:var(--accent-2)}
+.pillar.support{border-color:var(--accent-3)}
+.pillar-label{position:absolute;top:-12px;left:16px;background:var(--panel);padding:2px 10px;font-size:12px;font-weight:700;border-radius:6px}
+.core .pillar-label{color:var(--accent);border:1px solid var(--accent)}
+.strategy .pillar-label{color:var(--accent-2);border:1px solid var(--accent-2)}
+.support .pillar-label{color:var(--accent-3);border:1px solid var(--accent-3)}
+
+ul{margin-left:20px;line-height:1.8}
+ul li{margin-bottom:4px;font-size:clamp(13px,1.2vw,15px);color:var(--text-soft)}
+
+.quote-box{background:linear-gradient(135deg,#f0f9ff,#ede9fe);border-left:4px solid var(--accent);padding:20px 24px;border-radius:8px;margin:20px 0;font-style:italic;color:var(--text);font-size:clamp(14px,1.4vw,17px);line-height:1.7}
+
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:12px 0}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-soft)}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="deck">
+
+<!-- Slide 1: Cover -->
+<section class="slide active cover">
+  <h1>HR流程全景地图<br/>与Skill建设蓝图</h1>
+  <div class="sub">基于大厂最佳实践的 L1-L3 流程框架，以及 95 个 HR 流程的 Skill 封装机会评估</div>
+  <div class="tag">Skill建设四步法 · 第一步成果</div>
+  <div class="meta">Kate · HR AI变革转型实战工作坊 · 第二章预览</div>
+</section>
+
+<!-- Slide 2: 设计思路 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag">设计思路</span><h2 style="margin-top:10px">三层逻辑叠加，不拍脑袋</h2></div>
+    <div class="muted">01</div>
+  </div>
+  <div class="grid grid-3" style="flex:1">
+    <div class="card card-accent">
+      <div class="card-title">① 方法论底座</div>
+      <div class="card-body">借鉴华为"OES分类法"（运营/使能/支撑），在HR场景改造为：<br/><br/>
+      <span class="accent">核心价值链</span> × <span class="accent2">战略赋能链</span> × <span class="accent3">共享支撑链</span><br/><br/>
+      清晰区分"直接创造人力资本价值" vs "前瞻规划" vs "底座保障"。</div>
+    </div>
+    <div class="card card-purple">
+      <div class="card-title">② 价值链锚定</div>
+      <div class="card-body">以你已定稿的四大价值链为核心骨架：<br/><br/>
+      <b>招聘 · 培训 · 绩效 · 薪酬</b><br/><br/>
+      再补全上下游流程，形成完整覆盖、不重不漏的HR全景。</div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">③ 大厂标杆校准</div>
+      <div class="card-body">每一条L3流程，都映射一家标杆实践：<br/><br/>
+      阿里(政委/六脉神剑) · 华为(BLM/干部九条) · 字节(OKR/Review) · 谷歌(People Analytics/Oxygen) · 腾讯(活水/双通道) · 微软(Growth Mindset) · Meta(PSC)</div>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 3: Skill机会评级 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag tag-purple">评级标准</span><h2 style="margin-top:10px">Skill 机会三级评估</h2></div>
+    <div class="muted">02</div>
+  </div>
+  <div class="grid grid-3" style="flex:1;margin-top:20px">
+    <div class="card" style="border-top:4px solid var(--accent-3)">
+      <div class="card-title"><span class="skill-hi">🟢 高</span> 首批封装</div>
+      <div class="card-body" style="margin-top:10px">
+        <b>判断标准：</b>规则明确、重复性高、输出可标准化、边界清晰<br/><br/>
+        <b>典型场景：</b>JD生成、简历匹配、OKR质量审查、薪酬对标、学习地图、FAQ问答<br/><br/>
+        <b>策略：</b>直接用 create-skill 封装，立即见效
+      </div>
+    </div>
+    <div class="card" style="border-top:4px solid var(--warn)">
+      <div class="card-title"><span class="skill-mi">🟡 中</span> 第二批封装</div>
+      <div class="card-body" style="margin-top:10px">
+        <b>判断标准：</b>需要判断但有模式可循，需人机协作<br/><br/>
+        <b>典型场景：</b>九宫格盘点、高潜识别、离职原因分析、敬业度诊断、绩效校准筹备<br/><br/>
+        <b>策略：</b>先AI辅助决策，人类最终裁定
+      </div>
+    </div>
+    <div class="card" style="border-top:4px solid var(--danger)">
+      <div class="card-title"><span class="skill-lo">🔴 低</span> 保留人决策</div>
+      <div class="card-body" style="margin-top:10px">
+        <b>判断标准：</b>高度主观 / 伦理敏感 / 战略决策 / 需人际互动<br/><br/>
+        <b>典型场景：</b>Offer谈判、PIP决策、组织架构设计、劳动争议处理、EAP服务<br/><br/>
+        <b>策略：</b>AI仅提供数据参考，决策权归人
+      </div>
+    </div>
+  </div>
+  <div class="quote-box" style="margin-top:24px">
+    <b>原则：</b>AI负责执行，人类守住决策红线。与詹老师课程"<b>资金流转/生物识别/核心基建决策</b>"三条红线同构——在HR场景即 <b>用人决策/劳动关系/伦理敏感</b> 三条红线。
+  </div>
+</section>
+
+<!-- Slide 4: L0全景架构 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag tag-green">全景架构</span><h2 style="margin-top:10px">L0 HR流程三环结构</h2></div>
+    <div class="muted">03</div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:0 40px">
+    <div class="pillar strategy">
+      <span class="pillar-label">战略赋能链 · 前瞻规划</span>
+      <div class="grid grid-2" style="margin-top:8px">
+        <div><b>L1.1</b> 组织与人才战略规划</div>
+        <div><b>L1.7</b> 组织发展与文化</div>
+      </div>
+    </div>
+    <div class="pillar core" style="background:linear-gradient(90deg,#eff6ff,#f0f9ff)">
+      <span class="pillar-label">核心价值链 · 直接创造人力资本价值</span>
+      <div class="grid grid-4" style="margin-top:8px">
+        <div><b>L1.2</b> 人才获取与配置<br/><span class="muted" style="font-size:12px">（招聘价值链）</span></div>
+        <div><b>L1.3</b> 人才发展与学习<br/><span class="muted" style="font-size:12px">（培训价值链）</span></div>
+        <div><b>L1.4</b> 绩效管理与反馈<br/><span class="muted" style="font-size:12px">（绩效价值链）</span></div>
+        <div><b>L1.5</b> 薪酬与激励<br/><span class="muted" style="font-size:12px">（薪酬价值链）</span></div>
+      </div>
+    </div>
+    <div class="pillar support">
+      <span class="pillar-label">共享支撑链 · 底座保障</span>
+      <div class="grid grid-2" style="margin-top:8px">
+        <div><b>L1.6</b> 员工关系与体验</div>
+        <div><b>L1.8</b> HR运营与数据</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-around;margin-top:24px;text-align:center">
+    <div><div class="big-stat">8</div><div class="big-stat-label">L1 大类</div></div>
+    <div><div class="big-stat" style="color:var(--accent-2)">32</div><div class="big-stat-label">L2 流程组</div></div>
+    <div><div class="big-stat" style="color:var(--accent-3)">95</div><div class="big-stat-label">L3 业务流程</div></div>
+    <div><div class="big-stat" style="color:var(--warn)">82</div><div class="big-stat-label">可Skill化 (86%)</div></div>
+  </div>
+</section>
+
+<!-- Slide 5: L1.1 战略规划 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag tag-purple">战略赋能链</span><h2 style="margin-top:10px">L1.1 组织与人才战略规划</h2></div>
+    <div class="muted">04</div>
+  </div>
+  <table>
+    <tr><th style="width:18%">L2 流程组</th><th style="width:26%">L3 业务流程</th><th style="width:10%">Skill</th><th style="width:22%">标杆实践</th><th>建议Skill名</th></tr>
+    <tr><td rowspan="3"><b>1.1 组织设计</b></td><td>组织架构设计与调整</td><td><span class="skill-lo">🔴 低</span></td><td>华为 BLM</td><td class="muted">—</td></tr>
+    <tr><td>编制规划与HC管理</td><td><span class="skill-mi">🟡 中</span></td><td>字节季度HC评审</td><td><code>hc-planner</code></td></tr>
+    <tr><td>岗位体系与职位设计</td><td><span class="skill-hi">🟢 高</span></td><td>华为岗位族谱</td><td><code>job-designer</code></td></tr>
+    <tr><td rowspan="3"><b>1.2 战略人力规划</b></td><td>人力需求预测(SWP)</td><td><span class="skill-hi">🟢 高</span></td><td>谷歌 People Analytics</td><td><code>workforce-forecaster</code></td></tr>
+    <tr><td>关键岗位识别</td><td><span class="skill-mi">🟡 中</span></td><td>阿里 A-Position 盘点</td><td><code>critical-role-mapper</code></td></tr>
+    <tr><td>人才供需缺口分析</td><td><span class="skill-hi">🟢 高</span></td><td>微软 Talent Gap</td><td><code>talent-gap-analyzer</code></td></tr>
+    <tr><td rowspan="3"><b>1.3 人才盘点</b></td><td>九宫格盘点</td><td><span class="skill-mi">🟡 中</span></td><td>阿里盘点会</td><td><code>nine-box-generator</code></td></tr>
+    <tr><td>继任者计划</td><td><span class="skill-mi">🟡 中</span></td><td>华为继任池</td><td><code>successor-planner</code></td></tr>
+    <tr><td>高潜识别与评估</td><td><span class="skill-mi">🟡 中</span></td><td>腾讯 HiPo</td><td><code>hipo-assessor</code></td></tr>
+  </table>
+</section>
+
+<!-- Slide 6: L1.2 招聘价值链 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag">核心价值链</span><h2 style="margin-top:10px">L1.2 人才获取与配置（招聘价值链）</h2></div>
+    <div class="muted">05</div>
+  </div>
+  <table>
+    <tr><th style="width:14%">L2</th><th style="width:28%">L3 业务流程</th><th style="width:10%">Skill</th><th style="width:20%">标杆实践</th><th>建议Skill名</th></tr>
+    <tr><td rowspan="3"><b>2.1 需求洞察</b></td><td>招聘需求解析</td><td><span class="skill-hi">🟢 高</span></td><td>字节JD精准画像</td><td><code>jd-decoder</code></td></tr>
+    <tr><td>人才画像建模</td><td><span class="skill-hi">🟢 高</span></td><td>谷歌 Hiring Profile</td><td><code>candidate-profiler</code></td></tr>
+    <tr><td>JD撰写与优化</td><td><span class="skill-hi">🟢 高</span></td><td>Meta JD生成器</td><td><code>jd-writer</code></td></tr>
+    <tr><td rowspan="4"><b>2.2 人才获取</b></td><td>简历筛选与匹配</td><td><span class="skill-hi">🟢 高</span></td><td>领英 Recruiter</td><td><code>resume-matcher</code></td></tr>
+    <tr><td>主动寻源 Sourcing</td><td><span class="skill-hi">🟢 高</span></td><td>阿里猎鹰</td><td><code>passive-sourcer</code></td></tr>
+    <tr><td>内推/活水管理</td><td><span class="skill-mi">🟡 中</span></td><td>腾讯活水计划</td><td><code>referral-tracker</code></td></tr>
+    <tr><td>雇主品牌内容</td><td><span class="skill-hi">🟢 高</span></td><td>谷歌 Career Site</td><td><code>employer-brand-copy</code></td></tr>
+    <tr><td rowspan="4"><b>2.3 评估决策</b></td><td>AI面试辅助（结构化）</td><td><span class="skill-hi">🟢 高</span></td><td>字节面试官助手</td><td><code>interview-copilot</code></td></tr>
+    <tr><td>代码/技能评估</td><td><span class="skill-hi">🟢 高</span></td><td>微软 CodeSignal</td><td><code>tech-assessor</code></td></tr>
+    <tr><td>面试评分卡生成</td><td><span class="skill-hi">🟢 高</span></td><td>谷歌 Structured Interview</td><td><code>scorecard-generator</code></td></tr>
+    <tr><td>候选人综合对比</td><td><span class="skill-mi">🟡 中</span></td><td>亚马逊 Bar Raiser</td><td><code>candidate-ranker</code></td></tr>
+    <tr><td rowspan="5"><b>2.4 Offer与入职</b></td><td>Offer谈判策略</td><td><span class="skill-lo">🔴 低</span></td><td>—</td><td class="muted">—</td></tr>
+    <tr><td>背景调查</td><td><span class="skill-mi">🟡 中</span></td><td>大厂第三方背调</td><td><code>bgc-orchestrator</code></td></tr>
+    <tr><td>入职前沟通 Nurture</td><td><span class="skill-hi">🟢 高</span></td><td>Meta Pre-boarding</td><td><code>preboard-nurturer</code></td></tr>
+    <tr><td>入职流程编排</td><td><span class="skill-hi">🟢 高</span></td><td>腾讯入职360</td><td><code>onboarding-orchestrator</code></td></tr>
+    <tr><td>入职引导与融入</td><td><span class="skill-mi">🟡 中</span></td><td>谷歌 Noogler</td><td><code>buddy-assigner</code></td></tr>
+  </table>
+</section>
+
+<!-- Slide 7: L1.3 培训 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag">核心价值链</span><h2 style="margin-top:10px">L1.3 人才发展与学习（培训价值链）</h2></div>
+    <div class="muted">06</div>
+  </div>
+  <table>
+    <tr><th style="width:14%">L2</th><th style="width:28%">L3 业务流程</th><th style="width:10%">Skill</th><th style="width:20%">标杆实践</th><th>建议Skill名</th></tr>
+    <tr><td rowspan="3"><b>3.1 学习需求</b></td><td>岗位胜任力建模</td><td><span class="skill-hi">🟢 高</span></td><td>华为任职资格</td><td><code>competency-modeler</code></td></tr>
+    <tr><td>能力差距诊断</td><td><span class="skill-hi">🟢 高</span></td><td>字节 Skill Mapping</td><td><code>skill-gap-diagnoser</code></td></tr>
+    <tr><td>学习需求调研</td><td><span class="skill-hi">🟢 高</span></td><td>阿里学习院</td><td><code>learning-survey-analyzer</code></td></tr>
+    <tr><td rowspan="4"><b>3.2 学习设计</b></td><td>学习地图生成</td><td><span class="skill-hi">🟢 高</span></td><td>腾讯 TLC</td><td><code>learning-path-builder</code></td></tr>
+    <tr><td>课程大纲设计</td><td><span class="skill-hi">🟢 高</span></td><td>LinkedIn Learning</td><td><code>curriculum-designer</code></td></tr>
+    <tr><td>课件生成（PPT/视频脚本）</td><td><span class="skill-hi">🟢 高</span></td><td>微软 Copilot</td><td><code>courseware-generator</code></td></tr>
+    <tr><td>考题/案例生成</td><td><span class="skill-hi">🟢 高</span></td><td>詹老师 process-quiz 同源</td><td><code>quiz-generator</code></td></tr>
+    <tr><td rowspan="3"><b>3.3 学习运营</b></td><td>讲师管理与评估</td><td><span class="skill-mi">🟡 中</span></td><td>阿里湖畔</td><td><code>trainer-evaluator</code></td></tr>
+    <tr><td>学习营/项目制运营</td><td><span class="skill-mi">🟡 中</span></td><td>华为战训</td><td><code>cohort-ops-planner</code></td></tr>
+    <tr><td>学习提醒与追踪</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>learning-nudge-agent</code></td></tr>
+    <tr><td rowspan="4"><b>3.4 发展评估</b></td><td>学习效果评估（柯氏四级）</td><td><span class="skill-hi">🟢 高</span></td><td>谷歌 GRow</td><td><code>learning-impact-analyzer</code></td></tr>
+    <tr><td>个人IDP生成</td><td><span class="skill-hi">🟢 高</span></td><td>IBM Watson Career</td><td><code>idp-drafter</code></td></tr>
+    <tr><td>轮岗/项目推荐</td><td><span class="skill-mi">🟡 中</span></td><td>字节 Grow</td><td><code>rotation-matcher</code></td></tr>
+    <tr><td>导师匹配</td><td><span class="skill-mi">🟡 中</span></td><td>Meta Mentor Match</td><td><code>mentor-matcher</code></td></tr>
+  </table>
+</section>
+
+<!-- Slide 8: L1.4 绩效 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag">核心价值链</span><h2 style="margin-top:10px">L1.4 绩效管理与反馈（绩效价值链）</h2></div>
+    <div class="muted">07</div>
+  </div>
+  <table>
+    <tr><th style="width:14%">L2</th><th style="width:28%">L3 业务流程</th><th style="width:10%">Skill</th><th style="width:20%">标杆实践</th><th>建议Skill名</th></tr>
+    <tr><td rowspan="3"><b>4.1 目标设定</b></td><td>OKR/KPI对齐辅导</td><td><span class="skill-hi">🟢 高</span></td><td>字节/谷歌 OKR</td><td><code>okr-coach</code></td></tr>
+    <tr><td>目标质量审查（SMART）</td><td><span class="skill-hi">🟢 高</span></td><td>字节 OKR Review</td><td><code>okr-quality-checker</code></td></tr>
+    <tr><td>目标对齐可视化</td><td><span class="skill-mi">🟡 中</span></td><td>—</td><td><code>okr-alignment-viz</code></td></tr>
+    <tr><td rowspan="3"><b>4.2 过程管理</b></td><td>持续反馈（CFR）</td><td><span class="skill-hi">🟢 高</span></td><td>谷歌 gThanks</td><td><code>continuous-feedback-nudge</code></td></tr>
+    <tr><td>1:1会议纪要提炼</td><td><span class="skill-hi">🟢 高</span></td><td>微软 Viva</td><td><code>one-on-one-summarizer</code></td></tr>
+    <tr><td>项目 Review 自动生成</td><td><span class="skill-mi">🟡 中</span></td><td>字节双月 Review</td><td><code>project-review-writer</code></td></tr>
+    <tr><td rowspan="4"><b>4.3 评估校准</b></td><td>360度评估收集</td><td><span class="skill-hi">🟢 高</span></td><td>谷歌 GRAD</td><td><code>360-collector</code></td></tr>
+    <tr><td>评估内容提炼分析</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>360-insight-extractor</code></td></tr>
+    <tr><td>绩效校准会筹备</td><td><span class="skill-mi">🟡 中</span></td><td>阿里271校准会</td><td><code>calibration-prep</code></td></tr>
+    <tr><td>绩效面谈话术生成</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>perf-conversation-coach</code></td></tr>
+    <tr><td rowspan="4"><b>4.4 绩效应用</b></td><td>结果发放与沟通</td><td><span class="skill-lo">🔴 低</span></td><td>—</td><td class="muted">—</td></tr>
+    <tr><td>低绩效管理（PIP）</td><td><span class="skill-lo">🔴 低</span></td><td>Meta PSC</td><td class="muted">—</td></tr>
+    <tr><td>价值观评估（文化考核）</td><td><span class="skill-mi">🟡 中</span></td><td>阿里六脉神剑</td><td><code>values-evaluator</code></td></tr>
+    <tr><td>绩效申诉受理</td><td><span class="skill-mi">🟡 中</span></td><td>—</td><td><code>appeal-triage</code></td></tr>
+  </table>
+</section>
+
+<!-- Slide 9: L1.5 薪酬 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag">核心价值链</span><h2 style="margin-top:10px">L1.5 薪酬与激励（薪酬价值链）</h2></div>
+    <div class="muted">08</div>
+  </div>
+  <table>
+    <tr><th style="width:14%">L2</th><th style="width:28%">L3 业务流程</th><th style="width:10%">Skill</th><th style="width:20%">标杆实践</th><th>建议Skill名</th></tr>
+    <tr><td rowspan="3"><b>5.1 薪酬设计</b></td><td>岗位价值评估（IPE/Hay）</td><td><span class="skill-mi">🟡 中</span></td><td>华为 Hay</td><td><code>job-evaluator</code></td></tr>
+    <tr><td>薪酬结构设计</td><td><span class="skill-lo">🔴 低</span></td><td>—</td><td class="muted">—</td></tr>
+    <tr><td>市场薪酬对标分析</td><td><span class="skill-hi">🟢 高</span></td><td>Mercer / Radford</td><td><code>market-benchmarker</code></td></tr>
+    <tr><td rowspan="3"><b>5.2 薪酬调整</b></td><td>调薪方案模拟</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>comp-simulator</code></td></tr>
+    <tr><td>薪酬倒挂检测</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>pay-compression-detector</code></td></tr>
+    <tr><td>薪酬公平性审查（Equity）</td><td><span class="skill-hi">🟢 高</span></td><td>微软 Pay Equity</td><td><code>pay-equity-auditor</code></td></tr>
+    <tr><td rowspan="3"><b>5.3 短期激励</b></td><td>年终奖/分红包测算</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>bonus-pool-calculator</code></td></tr>
+    <tr><td>个人奖金分配建议</td><td><span class="skill-mi">🟡 中</span></td><td>—</td><td><code>bonus-allocator</code></td></tr>
+    <tr><td>Spot Award / 即时激励</td><td><span class="skill-hi">🟢 高</span></td><td>谷歌 gThanks</td><td><code>spot-award-recommender</code></td></tr>
+    <tr><td rowspan="2"><b>5.4 长期激励</b></td><td>股票/期权授予测算</td><td><span class="skill-mi">🟡 中</span></td><td>Meta RSU</td><td><code>equity-grant-modeler</code></td></tr>
+    <tr><td>LTI 影响分析</td><td><span class="skill-mi">🟡 中</span></td><td>—</td><td><code>lti-impact-analyzer</code></td></tr>
+    <tr><td rowspan="2"><b>5.5 薪酬沟通</b></td><td>Total Reward Statement 生成</td><td><span class="skill-hi">🟢 高</span></td><td>Meta TRS</td><td><code>trs-generator</code></td></tr>
+    <tr><td>薪酬 FAQ 自动应答</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>comp-faq-bot</code></td></tr>
+  </table>
+</section>
+
+<!-- Slide 10: L1.6 员工关系 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag tag-green">共享支撑链</span><h2 style="margin-top:10px">L1.6 员工关系与体验</h2></div>
+    <div class="muted">09</div>
+  </div>
+  <table>
+    <tr><th style="width:14%">L2</th><th style="width:28%">L3 业务流程</th><th style="width:10%">Skill</th><th style="width:20%">标杆实践</th><th>建议Skill名</th></tr>
+    <tr><td rowspan="3"><b>6.1 生命周期</b></td><td>转正/调岗/晋升流程</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>lifecycle-orchestrator</code></td></tr>
+    <tr><td>离职流程与交接</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>offboarding-checker</code></td></tr>
+    <tr><td>离职面谈分析</td><td><span class="skill-hi">🟢 高</span></td><td>字节离职洞察</td><td><code>exit-insight-extractor</code></td></tr>
+    <tr><td rowspan="3"><b>6.2 员工沟通</b></td><td>员工咨询 / Helpdesk</td><td><span class="skill-hi">🟢 高</span></td><td>阿里 HR小蜜</td><td><code>hr-concierge-bot</code></td></tr>
+    <tr><td>政策解读 Q&A</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>policy-qa-bot</code></td></tr>
+    <tr><td>员工情绪/敬业度监测</td><td><span class="skill-mi">🟡 中</span></td><td>谷歌 Googlegeist</td><td><code>sentiment-monitor</code></td></tr>
+    <tr><td rowspan="3"><b>6.3 劳动关系</b></td><td>合同管理</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>contract-reviewer</code></td></tr>
+    <tr><td>劳动争议处理</td><td><span class="skill-lo">🔴 低</span></td><td>—</td><td class="muted">—</td></tr>
+    <tr><td>合规自查（劳动法）</td><td><span class="skill-mi">🟡 中</span></td><td>—</td><td><code>labor-compliance-check</code></td></tr>
+    <tr><td rowspan="3"><b>6.4 员工体验</b></td><td>体验旅程诊断（EX Journey）</td><td><span class="skill-mi">🟡 中</span></td><td>微软 Viva</td><td><code>ex-journey-diagnoser</code></td></tr>
+    <tr><td>NPS/满意度调研分析</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>survey-analyzer</code></td></tr>
+    <tr><td>EAP/健康管理</td><td><span class="skill-lo">🔴 低</span></td><td>—</td><td class="muted">—</td></tr>
+  </table>
+</section>
+
+<!-- Slide 11: L1.7 OD -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag tag-purple">战略赋能链</span><h2 style="margin-top:10px">L1.7 组织发展与文化</h2></div>
+    <div class="muted">10</div>
+  </div>
+  <table>
+    <tr><th style="width:16%">L2</th><th style="width:30%">L3 业务流程</th><th style="width:12%">Skill</th><th style="width:22%">标杆实践</th><th>建议Skill名</th></tr>
+    <tr><td rowspan="2"><b>7.1 组织诊断</b></td><td>组织健康度评估</td><td><span class="skill-mi">🟡 中</span></td><td>麦肯锡 OHI</td><td><code>org-health-diagnoser</code></td></tr>
+    <tr><td>组织效能分析</td><td><span class="skill-mi">🟡 中</span></td><td>华为组织绩效</td><td><code>org-effectiveness-analyzer</code></td></tr>
+    <tr><td rowspan="2"><b>7.2 变革管理</b></td><td>变革利益相关者分析</td><td><span class="skill-mi">🟡 中</span></td><td>—</td><td><code>stakeholder-mapper</code></td></tr>
+    <tr><td>变革沟通方案</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>change-comms-planner</code></td></tr>
+    <tr><td rowspan="2"><b>7.3 文化建设</b></td><td>文化故事/案例生成</td><td><span class="skill-hi">🟢 高</span></td><td>阿里味道</td><td><code>culture-story-writer</code></td></tr>
+    <tr><td>文化渗透度诊断</td><td><span class="skill-mi">🟡 中</span></td><td>—</td><td><code>culture-pulse-checker</code></td></tr>
+    <tr><td rowspan="2"><b>7.4 干部/领导力</b></td><td>领导力测评</td><td><span class="skill-mi">🟡 中</span></td><td>华为干部四力</td><td><code>leadership-assessor</code></td></tr>
+    <tr><td>干部述职报告分析</td><td><span class="skill-hi">🟢 高</span></td><td>华为任命述职</td><td><code>leader-review-analyzer</code></td></tr>
+  </table>
+</section>
+
+<!-- Slide 12: L1.8 运营 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag tag-green">共享支撑链</span><h2 style="margin-top:10px">L1.8 HR运营与数据</h2></div>
+    <div class="muted">11</div>
+  </div>
+  <table>
+    <tr><th style="width:16%">L2</th><th style="width:30%">L3 业务流程</th><th style="width:12%">Skill</th><th style="width:22%">标杆实践</th><th>建议Skill名</th></tr>
+    <tr><td rowspan="3"><b>8.1 共享服务</b></td><td>SOP 文档生成/维护</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>hr-sop-writer</code></td></tr>
+    <tr><td>审批流程代跑</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>approval-runner</code></td></tr>
+    <tr><td>工单智能分类</td><td><span class="skill-hi">🟢 高</span></td><td>阿里 HR共享</td><td><code>ticket-classifier</code></td></tr>
+    <tr><td rowspan="3"><b>8.2 数据分析</b></td><td>HR月度 Dashboard</td><td><span class="skill-hi">🟢 高</span></td><td>谷歌 People Analytics</td><td><code>hr-dashboard-auto</code></td></tr>
+    <tr><td>流失预测模型解读</td><td><span class="skill-mi">🟡 中</span></td><td>IBM Watson</td><td><code>attrition-predictor-translator</code></td></tr>
+    <tr><td>人效分析</td><td><span class="skill-hi">🟢 高</span></td><td>字节人效看板</td><td><code>productivity-analyzer</code></td></tr>
+    <tr><td rowspan="2"><b>8.3 合规审计</b></td><td>GDPR/PIPL 数据合规扫描</td><td><span class="skill-mi">🟡 中</span></td><td>Meta 隐私工程</td><td><code>privacy-scanner</code></td></tr>
+    <tr><td>HR审计底稿生成</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>hr-audit-draft</code></td></tr>
+    <tr><td rowspan="2"><b>8.4 HR系统</b></td><td>HR数据质量巡检</td><td><span class="skill-hi">🟢 高</span></td><td>—</td><td><code>data-quality-inspector</code></td></tr>
+    <tr><td>系统变更影响分析</td><td><span class="skill-lo">🔴 低</span></td><td>—</td><td class="muted">—</td></tr>
+  </table>
+</section>
+
+<!-- Slide 13: Skill分布统计 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag tag-orange">数据洞察</span><h2 style="margin-top:10px">Skill 机会分布全景</h2></div>
+    <div class="muted">12</div>
+  </div>
+  <div class="grid grid-3" style="margin:20px 0">
+    <div class="card card-green" style="text-align:center">
+      <div class="big-stat" style="color:var(--accent-3)">52</div>
+      <div class="big-stat-label">🟢 高适合度 · 首批封装</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text-mute)">占比 55%</div>
+    </div>
+    <div class="card card-warn" style="text-align:center">
+      <div class="big-stat" style="color:var(--warn)">30</div>
+      <div class="big-stat-label">🟡 中适合度 · 第二批</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text-mute)">占比 32%</div>
+    </div>
+    <div class="card" style="text-align:center;border-left:4px solid var(--danger)">
+      <div class="big-stat" style="color:var(--danger)">13</div>
+      <div class="big-stat-label">🔴 保留人决策</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text-mute)">占比 13%</div>
+    </div>
+  </div>
+  <h3 style="margin-top:20px">四大价值链 Skill 密度对比</h3>
+  <table style="margin-top:8px">
+    <tr><th>核心价值链</th><th>L3 总数</th><th>可Skill化（🟢+🟡）</th><th>Skill密度</th><th>建设优先级</th></tr>
+    <tr><td><b class="accent">招聘（L1.2）</b></td><td>15</td><td>13</td><td><b>87%</b></td><td><span class="skill-hi">★★★ 最高</span></td></tr>
+    <tr><td><b class="accent2">培训（L1.3）</b></td><td>13</td><td>12</td><td><b>92%</b></td><td><span class="skill-hi">★★★ 最高</span></td></tr>
+    <tr><td><b class="accent3">绩效（L1.4）</b></td><td>13</td><td>10</td><td><b>77%</b></td><td><span class="skill-mi">★★</span></td></tr>
+    <tr><td><b style="color:var(--warn)">薪酬（L1.5）</b></td><td>12</td><td>11</td><td><b>92%</b></td><td><span class="skill-hi">★★★</span></td></tr>
+  </table>
+  <div class="quote-box" style="margin-top:16px">
+    <b>洞察：</b>四大核心价值链中，<b>培训 / 薪酬</b> 的Skill密度最高（92%），<b>招聘</b> 紧随其后（87%）——这三条链应作为首批Skill封装的主战场；<b>绩效</b> 因涉及更多人际互动（PIP、面谈）密度略低，但关键节点仍可AI化。
+  </div>
+</section>
+
+<!-- Slide 14: Top 10 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag">速赢清单</span><h2 style="margin-top:10px">首批 Top 10 速赢 Skill</h2></div>
+    <div class="muted">13</div>
+  </div>
+  <div class="subtitle">建议在课程实战环节使用，每个都是高频、高价值、规则明确的首选</div>
+  <table>
+    <tr><th style="width:5%">#</th><th style="width:18%">Skill 名</th><th style="width:20%">所属价值链</th><th style="width:25%">核心痛点</th><th>预期价值</th></tr>
+    <tr><td>1</td><td><code>jd-decoder</code></td><td class="accent">招聘 · 需求洞察</td><td>HRBP 拿到的用人需求口径不清、画像模糊</td><td>将一句话需求 → 结构化岗位画像</td></tr>
+    <tr><td>2</td><td><code>resume-matcher</code></td><td class="accent">招聘 · 人才获取</td><td>200 份简历人工看 3 天</td><td>筛选效率 ↑ 10 倍，漏选率 ↓ 80%</td></tr>
+    <tr><td>3</td><td><code>interview-copilot</code></td><td class="accent">招聘 · 评估决策</td><td>不同面试官评估标准不一</td><td>结构化问题 + 实时评分卡，准确率 ↑ 30%</td></tr>
+    <tr><td>4</td><td><code>competency-modeler</code></td><td class="accent2">培训 · 学习需求</td><td>岗位胜任力更新慢，2 年不动</td><td>AI 辅助构建可量化的能力模型</td></tr>
+    <tr><td>5</td><td><code>learning-path-builder</code></td><td class="accent2">培训 · 学习设计</td><td>学习地图靠拍脑袋</td><td>基于岗位族 + 能力缺口自动生成</td></tr>
+    <tr><td>6</td><td><code>okr-quality-checker</code></td><td class="accent3">绩效 · 目标设定</td><td>OKR 不可量化、对齐差</td><td>SMART 审查 + 自动改写建议</td></tr>
+    <tr><td>7</td><td><code>360-insight-extractor</code></td><td class="accent3">绩效 · 评估校准</td><td>360 反馈文本堆积如山无法用</td><td>主题聚类 + 优劣势提炼 + 发展建议</td></tr>
+    <tr><td>8</td><td><code>market-benchmarker</code></td><td style="color:var(--warn)">薪酬 · 薪酬设计</td><td>对标报告解读一人一天</td><td>自动解析 Mercer/Radford，输出调薪建议</td></tr>
+    <tr><td>9</td><td><code>exit-insight-extractor</code></td><td style="color:var(--accent-3)">员工关系</td><td>离职面谈记录无人看</td><td>结构化原因聚类 + 流失趋势预警</td></tr>
+    <tr><td>10</td><td><code>hr-concierge-bot</code></td><td style="color:var(--accent-3)">员工关系</td><td>HR 40% 时间在答重复问题</td><td>政策 Q&A 自动化，节省 HR 60% 精力</td></tr>
+  </table>
+</section>
+
+<!-- Slide 15: Skill建设四步法 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag tag-purple">路径</span><h2 style="margin-top:10px">Skill 建设四步法 · 当前进展</h2></div>
+    <div class="muted">14</div>
+  </div>
+  <div class="subtitle">借鉴詹老师课程方法论 · 流程驱动而非遍地开花</div>
+  <div class="grid grid-4" style="flex:1">
+    <div class="card card-green" style="position:relative">
+      <div style="position:absolute;top:-14px;right:16px;background:var(--accent-3);color:#fff;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700">✓ 已完成</div>
+      <h3 style="color:var(--accent-3)">第一步</h3>
+      <div class="card-title">流程梳理</div>
+      <div class="card-body">建立 L1-L3 流程框架<br/><br/><b>输出：</b>HR全景图（本课件）<br/>95 条 L3 流程<br/>82 个 Skill 机会</div>
+    </div>
+    <div class="card card-accent">
+      <div style="position:absolute;top:-14px;right:16px;background:var(--accent);color:#fff;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700">▶ 下一步</div>
+      <h3 style="color:var(--accent)">第二步</h3>
+      <div class="card-title">能力拆解</div>
+      <div class="card-body">每个 L3 节点拆解为原子能力<br/><br/><b>动作：</b>对 Top 10 Skill 逐个输出<br/>触发条件 / 输入 / 处理 / 输出 / 限制</div>
+    </div>
+    <div class="card card-purple">
+      <h3 style="color:var(--accent-2)">第三步</h3>
+      <div class="card-title">Skill 构建</div>
+      <div class="card-body">封装为标准 Skill 文件<br/><br/><b>工具：</b>create-skill<br/>YAML frontmatter + markdown body<br/>遵循好 Skill 五标准</div>
+    </div>
+    <div class="card card-warn">
+      <h3 style="color:var(--warn)">第四步</h3>
+      <div class="card-title">岗位聚合</div>
+      <div class="card-body">按角色聚合 Skill 包<br/><br/><b>输出：</b><br/>AI-HRBP Skill 包<br/>AI-COE Skill 包<br/>AI-SSC Skill 包</div>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 16: 行动建议 -->
+<section class="slide">
+  <div class="header-bar">
+    <div><span class="tag">行动建议</span><h2 style="margin-top:10px">三步落地 · 从蓝图到实战</h2></div>
+    <div class="muted">15</div>
+  </div>
+  <div class="grid grid-3" style="flex:1;margin-top:20px">
+    <div class="card card-accent">
+      <h3 class="accent">本周</h3>
+      <div class="card-title">锁定首发 Skill</div>
+      <ul>
+        <li>从 Top 10 中选 <b>1-2 个</b> 作为课程示范</li>
+        <li>推荐：<code>resume-matcher</code> + <code>okr-quality-checker</code></li>
+        <li>收集真实数据样本（脱敏）</li>
+      </ul>
+    </div>
+    <div class="card card-purple">
+      <h3 class="accent2">本月</h3>
+      <div class="card-title">完成示范 Skill 构建</div>
+      <ul>
+        <li>走完四步法 完整闭环</li>
+        <li>产出可运行的 Skill 文件</li>
+        <li>真实数据跑 3-5 次验证</li>
+        <li>记录效果数据（对比人工 vs AI）</li>
+      </ul>
+    </div>
+    <div class="card card-green">
+      <h3 class="accent3">本季度</h3>
+      <div class="card-title">课程全景落地</div>
+      <ul>
+        <li>将 L1-L3 全景嵌入第二章</li>
+        <li>为每条核心价值链配 2-3 个实战 Skill</li>
+        <li>设计 HRBP / COE / SSC 三岗位 Skill 包</li>
+        <li>学员离场带走完整 Skill 清单 + 行动计划</li>
+      </ul>
+    </div>
+  </div>
+  <div class="quote-box" style="margin-top:24px;text-align:center;font-size:18px;font-style:normal">
+    <b>下一步核心动作：</b>不再扩大流程清单，而是<b class="accent">深入构建 Top 10 的其中 1 个</b>——亲手走完四步法，为后续所有 Skill 建设树立标准。
+  </div>
+</section>
+
+<!-- Slide 17: 结语 -->
+<section class="slide cover">
+  <div class="tag tag-purple">Skill建设四步法 · 第一步圆满</div>
+  <h1 style="margin-top:24px">不遍地开花<br/>以流程为锚点，系统化建设</h1>
+  <div class="sub" style="margin-top:24px">
+    <b class="accent">8 大类</b> × <b class="accent2">32 组</b> × <b class="accent3">95 条</b> × <b style="color:var(--warn)">82 个 Skill 机会</b><br/><br/>
+    这不是又一张"什么都能做"的清单，而是一张<b>有优先级、有标杆、有行动路径</b>的 HR AI 转型作战地图。
+  </div>
+  <div class="meta" style="margin-top:40px">Kate · HR AI变革转型实战工作坊<br/>下一步：走完 Top 1 Skill 的第二至第四步</div>
+</section>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button id="prev" onclick="go(-1)">‹</button>
+  <div class="nav-info"><span id="cur">1</span> / <span id="total">17</span></div>
+  <button id="next" onclick="go(1)">›</button>
+</div>
+
+<script>
+let idx = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+document.getElementById('total').textContent = total;
+function show(i){
+  slides.forEach((s,n)=>s.classList.toggle('active',n===i));
+  document.getElementById('cur').textContent = i+1;
+  document.getElementById('progress').style.width = ((i+1)/total*100)+'%';
+  document.getElementById('prev').disabled = i===0;
+  document.getElementById('next').disabled = i===total-1;
+}
+function go(d){
+  const n = idx+d;
+  if(n>=0 && n<total){ idx=n; show(idx); }
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ') go(1);
+  else if(e.key==='ArrowLeft') go(-1);
+});
+show(0);
+</script>
+
+</body>
+</html>
