@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI时代的组织与领导者进化 · 谭亮课件提炼版</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f8f9fc;--panel:#ffffff;--text:#1e293b;--text-soft:#475569;--text-mute:#64748b;
+  --accent:#b91c1c;--accent-2:#1e3a8a;--accent-3:#0f766e;--warn:#f59e0b;
+  --border:#e2e8f0;--border-strong:#cbd5e1;
+  --red-bg:#fee2e2;--red-tx:#991b1b;
+  --blue-bg:#dbeafe;--blue-tx:#1e40af;
+  --green-bg:#d1fae5;--green-tx:#065f46;
+  --yellow-bg:#fef3c7;--yellow-tx:#92400e;
+  --shadow:0 4px 16px rgba(15,23,42,.06);
+  --shadow-lg:0 12px 40px rgba(15,23,42,.10);
+}
+html,body{height:100%;font-family:'PingFang SC','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+.deck{position:relative;width:100vw;height:100vh}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:clamp(20px,3vw,48px) clamp(28px,5vw,72px);overflow:auto}
+.slide.active{display:flex;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:clamp(28px,3.6vw,48px);color:var(--accent-2);margin-bottom:8px;font-weight:700}
+h2{font-size:clamp(22px,2.6vw,34px);color:var(--accent-2);margin-bottom:16px;font-weight:700}
+h3{font-size:clamp(18px,1.8vw,24px);color:var(--accent);margin-bottom:8px;font-weight:600}
+.sub{color:var(--text-mute);font-size:clamp(14px,1.2vw,18px);margin-bottom:20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:14px 0}
+.card{background:var(--panel);padding:18px 16px;border-radius:12px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.card .num{font-size:clamp(24px,2.4vw,34px);font-weight:800;color:var(--accent);margin-bottom:6px}
+.card .lab{font-size:13px;color:var(--text-soft);font-weight:600;margin-bottom:4px}
+.card .desc{font-size:12px;color:var(--text-mute);line-height:1.5}
+.card.red{background:var(--red-bg)}
+.card.red .num{color:#991b1b}
+.card.blue{background:var(--blue-bg)}
+.card.blue .num{color:var(--blue-tx)}
+.card.green{background:var(--green-bg)}
+.card.green .num{color:var(--green-tx)}
+table{width:100%;border-collapse:collapse;background:var(--panel);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);font-size:clamp(12px,1.05vw,15px);margin-top:10px}
+th{background:#1e293b;color:#fff;padding:10px 12px;text-align:left;font-weight:600}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:#f8fafc}
+.callout{background:#fef9c3;border-left:4px solid var(--warn);padding:14px 18px;border-radius:8px;margin-top:14px;font-size:clamp(13px,1.1vw,16px);line-height:1.6;color:#713f12}
+.callout.red{background:var(--red-bg);border-left-color:var(--accent);color:var(--red-tx)}
+.callout.blue{background:var(--blue-bg);border-left-color:#2563eb;color:var(--blue-tx)}
+.callout.dark{background:#0f172a;border-left-color:var(--accent);color:#fff}
+.callout strong{font-weight:700}
+.flex-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
+.flex-row > *{flex:1;min-width:200px}
+.box{background:var(--panel);padding:16px 18px;border-radius:10px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.box.red{border-left:4px solid var(--accent)}
+.box.blue{border-left:4px solid #2563eb}
+.box.green{border-left:4px solid #059669}
+.box .t{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px}
+.box.blue .t{color:var(--blue-tx)}
+.box.green .t{color:var(--green-tx)}
+.box .c{font-size:13px;color:var(--text-soft);line-height:1.6}
+.kpi-row{display:flex;gap:16px;align-items:flex-end;margin:18px 0}
+.bar{flex:1;background:var(--panel);padding:12px 14px;border-radius:8px;border:1px solid var(--border)}
+.bar .l{font-size:13px;color:var(--text-soft);margin-bottom:4px;display:flex;justify-content:space-between}
+.bar .b{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+.bar .f{height:100%;background:linear-gradient(90deg,#b91c1c,#f59e0b)}
+.cover{align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,#1e3a8a 0%,#7c2d92 50%,#b91c1c 100%);color:#fff}
+.cover h1{color:#fff;font-size:clamp(36px,5vw,68px);margin-bottom:12px;text-shadow:0 4px 20px rgba(0,0,0,.3)}
+.cover .tag{font-size:clamp(18px,1.8vw,24px);color:#e0e7ff;margin-bottom:8px}
+.cover .speaker{margin-top:36px;padding:18px 32px;background:rgba(255,255,255,.12);border-radius:14px;backdrop-filter:blur(10px);font-size:clamp(13px,1.2vw,17px);color:#f1f5f9;line-height:1.8}
+.cover .speaker b{color:#fbbf24;font-size:clamp(20px,2vw,28px);display:block;margin-bottom:4px}
+.end{align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#7c2d92 100%);color:#fff}
+.end h1{color:#fff;font-size:clamp(28px,4vw,52px);line-height:1.3;margin-bottom:24px}
+.end .accent-q{color:#fbbf24}
+.nav{position:fixed;bottom:24px;right:24px;display:flex;gap:10px;z-index:100;background:rgba(255,255,255,.92);padding:10px 14px;border-radius:30px;box-shadow:var(--shadow-lg);backdrop-filter:blur(8px)}
+.nav button{background:var(--accent-2);color:#fff;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;font-weight:700;transition:all .2s}
+.nav button:hover{background:var(--accent);transform:translateY(-2px)}
+.nav button:disabled{opacity:.3;cursor:not-allowed;transform:none}
+.counter{padding:0 8px;font-size:13px;color:var(--text-soft);align-self:center;font-weight:600;min-width:50px;text-align:center}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#b91c1c,#1e3a8a);z-index:99;transition:width .3s}
+.tag-chip{display:inline-block;padding:3px 10px;background:var(--red-bg);color:var(--red-tx);font-size:12px;font-weight:600;border-radius:12px;margin-right:6px}
+.tag-chip.blue{background:var(--blue-bg);color:var(--blue-tx)}
+.tag-chip.green{background:var(--green-bg);color:var(--green-tx)}
+.formula{background:#0f172a;color:#fff;padding:18px 24px;border-radius:10px;text-align:center;font-size:clamp(16px,1.6vw,22px);margin:16px 0;font-weight:600;letter-spacing:.5px}
+.formula em{color:#fbbf24;font-style:normal}
+.toc{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
+.toc-item{background:var(--panel);padding:14px 18px;border-left:4px solid var(--accent);border-radius:8px;box-shadow:var(--shadow)}
+.toc-item .n{font-size:24px;font-weight:800;color:var(--accent);margin-bottom:4px}
+.toc-item .ti{font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px}
+.toc-item .de{font-size:12px;color:var(--text-mute)}
+.foot{position:absolute;bottom:14px;left:32px;right:32px;display:flex;justify-content:space-between;font-size:11px;color:var(--text-mute)}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="deck" id="deck">
+
+<!-- Slide 1 Cover -->
+<section class="slide cover active">
+  <div class="tag">HKU 港大经管学院 EMBA 公开课暨项目宣讲会</div>
+  <h1>AI时代的<br/>组织与领导者进化</h1>
+  <div style="font-size:clamp(15px,1.4vw,20px);color:#cbd5e1;margin-top:12px">企业不是缺 AI 工具，而是缺一套能够驾驭 AI 的组织操作系统</div>
+  <div class="speaker">
+    <b>谭 亮</b>
+    前阿里巴巴集团企业大学执行校长<br/>
+    港大经管学院高管教育定制课程项目主任<br/>
+    港大经管学院管理及商业策略实务教授
+  </div>
+</section>
+
+<!-- Slide 2 TOC -->
+<section class="slide">
+  <h2>课件全景导航 · 4大板块 28张幻灯片</h2>
+  <div class="sub">从全球趋势 → 核心命题 → 六大管理设计 → 落地路线，构建完整闭环</div>
+  <div class="toc">
+    <div class="toc-item"><div class="n">Part 1</div><div class="ti">宏观趋势 · 7张</div><div class="de">中美对比 / Agent五大趋势 / Suzano案例 / 中国政策双线推进</div></div>
+    <div class="toc-item"><div class="n">Part 2</div><div class="ti">核心命题 · 7张</div><div class="de">AI普及 ≠ 组织价值 / 五大错配 / 任务·角色·权责·流程·绩效</div></div>
+    <div class="toc-item"><div class="n">Part 3</div><div class="ti">六个管理设计 · 7张</div><div class="de">人机兼容组织 · 任务·角色·权责·流程·绩效·风险</div></div>
+    <div class="toc-item"><div class="n">Part 4</div><div class="ti">案例 & 进化 · 7张</div><div class="de">客服Agent / 具身智能 / 领导者五个重新 / 90天路线 / 立即行动</div></div>
+  </div>
+</section>
+
+<!-- ===== PART 1: 宏观趋势 ===== -->
+<section class="slide">
+  <h1 style="text-align:center;margin-top:18vh">Part 1</h1>
+  <h2 style="text-align:center;color:var(--accent)">宏观趋势 · 我们正处在什么样的拐点</h2>
+  <div class="sub" style="text-align:center">中美AI对比 / Agent五大趋势 / 真实案例 / 中国政策方向</div>
+</section>
+
+<section class="slide">
+  <h2>最新AI趋势：中美对比</h2>
+  <div class="sub">技术差距收窄，但竞争焦点转向资本、算力、场景和治理体系</div>
+  <div class="cards">
+    <div class="card red"><div class="num">$285.9B</div><div class="lab">美国AI私人投资</div></div>
+    <div class="card"><div class="num">$12.4B</div><div class="lab">中国AI私人投资</div></div>
+    <div class="card red"><div class="num">2.7%</div><div class="lab">顶尖模型差距</div></div>
+    <div class="card"><div class="num">5,427</div><div class="lab">美国数据中心</div></div>
+  </div>
+  <div class="flex-row">
+    <div class="box red"><div class="t">美国优势</div><div class="c">资本、数据中心、顶尖模型供给与AI创业活跃度依然领先</div></div>
+    <div class="box blue"><div class="t">中国优势</div><div class="c">模型性能差距基本收窄；论文数量、引用、专利产出、工业机器人安装等领域领先；场景资源和制造体系成为关键优势</div></div>
+  </div>
+  <div class="callout red"><strong>管理启示：</strong>AI竞争已经不是"谁会用工具"，而是"谁能把模型、数据、场景、组织和治理拼成可复制的生产系统"</div>
+</section>
+
+<section class="slide">
+  <h2>趋势一：AI Agent 从试验进入生产</h2>
+  <div class="sub">"从指令式计算到意图式计算"：员工说目标，Agent拆解路径并执行</div>
+  <div class="cards">
+    <div class="card red"><div class="num">52%</div><div class="lab">高管称已部署AI Agent</div><div class="desc">Google Cloud：已有Agent进入生产</div></div>
+    <div class="card"><div class="num">62%</div><div class="lab">正在试验Agent</div><div class="desc">McKinsey：62%受访者所在组织</div></div>
+    <div class="card red"><div class="num">23%</div><div class="lab">已开始规模化</div><div class="desc">McKinsey：组织正在某处规模化</div></div>
+    <div class="card"><div class="num">~66%</div><div class="lab">Agent任务成功率</div><div class="desc">OSWorld基准：从12%跃升</div></div>
+  </div>
+  <div class="callout"><strong>核心变化：</strong>员工不再只是"操作软件"，而是在设定目标、委派Agent、审核输出、处理例外</div>
+  <div class="flex-row">
+    <div class="box red"><div class="t">案例：营销经理</div><div class="c">不再亲自完成所有文案、数据和竞品监控；而是编排数据Agent、分析Agent、内容Agent和汇报Agent</div></div>
+    <div class="box blue"><div class="t">组织问题</div><div class="c">谁有权委派？谁审核？Agent能访问哪些系统？异常如何升级？</div></div>
+    <div class="box green"><div class="t">领导力问题</div><div class="c">管理者的工作从"分配人"变成"设计人机系统"</div></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>趋势二：Agent 最先进入四类高频场景</h2>
+  <div class="sub">部署不是平均发生，而是集中在高频、可复用、可度量的流程</div>
+  <div class="kpi-row" style="flex-direction:column;gap:8px;align-items:stretch">
+    <div class="bar"><div class="l"><span>客户服务与体验</span><span><strong>49%</strong></span></div><div class="b"><div class="f" style="width:98%"></div></div></div>
+    <div class="bar"><div class="l"><span>营销</span><span><strong>46%</strong></span></div><div class="b"><div class="f" style="width:92%"></div></div></div>
+    <div class="bar"><div class="l"><span>安全运营 / 网络安全</span><span><strong>46%</strong></span></div><div class="b"><div class="f" style="width:92%"></div></div></div>
+    <div class="bar"><div class="l"><span>技术支持</span><span><strong>45%</strong></span></div><div class="b"><div class="f" style="width:90%"></div></div></div>
+    <div class="bar"><div class="l"><span>产品创新 / 研究</span><span><strong>43%</strong></span></div><div class="b"><div class="f" style="width:86%"></div></div></div>
+  </div>
+  <div class="flex-row">
+    <div class="box blue"><div class="t">共性</div><div class="c">高频、知识密集、可复核、可追踪</div></div>
+    <div class="box red"><div class="t">误区</div><div class="c">把Agent当"万能员工"会放大风险；从边界清晰的流程开始</div></div>
+    <div class="box green"><div class="t">主线</div><div class="c">从"会用Agent"升级为"会管理Agent团队"</div></div>
+  </div>
+  <div class="callout red"><strong>管理启示：</strong>优先选择"高频 + 结构化 + 可复核 + 低不可逆风险"的场景，而不是一开始就交给AI做重大决策</div>
+</section>
+
+<section class="slide">
+  <h2>趋势三：中国AI进入"场景渗透"阶段</h2>
+  <div class="sub">从内容生成、信息归集，走向决策中枢、产业工人和行业深潜</div>
+  <div class="cards">
+    <div class="card red"><div class="num">55</div><div class="lab">入围案例</div><div class="desc">历时3个月征集、调研与评审</div></div>
+    <div class="card"><div class="num">10+</div><div class="lab">关键领域</div><div class="desc">智能制造、医疗健康、金融保险、零售电商、智慧城市等</div></div>
+    <div class="card red"><div class="num">3</div><div class="lab">关键趋势</div><div class="desc">角色升维、形态进化、路径深化</div></div>
+    <div class="card"><div class="num">实体</div><div class="lab">价值主导迁移</div><div class="desc">从纯技术公司向拥有场景的产业公司迁移</div></div>
+  </div>
+  <div class="flex-row">
+    <div class="box red"><div class="t">决策中枢</div><div class="c">供应链优化、动态定价、药物研发、金融风控等场景，AI开始进入关键业务流</div></div>
+    <div class="box blue"><div class="t">产业工人</div><div class="c">具身智能在高端制造、物流仓储、农业养殖、变电站等场景形成感知—决策—执行闭环</div></div>
+    <div class="box green"><div class="t">行业深潜</div><div class="c">行业专有数据、领域知识库、专家经验沉淀，成为通用模型之外的竞争壁垒</div></div>
+  </div>
+  <div class="callout"><strong>管理启示：</strong>真正的AI落地，不是"横向买一个通用工具"，而是把AI嵌入行业Know-how与关键业务流</div>
+</section>
+
+<section class="slide">
+  <h2>案例：Suzano 让 5 万名员工"自然语言查数据"</h2>
+  <div class="sub">把AI Agent嵌入企业数据系统，而不只是做一个聊天机器人</div>
+  <div class="callout blue"><strong>问题：</strong>业务人员要查询SAP物料数据，传统上依赖SQL、BI或数据团队</div>
+  <div class="formula">自然语言问题 → <em>Gemini Pro</em> 转换SQL → BigQuery 查询 SAP Materials 数据 → 员工获得答案</div>
+  <div class="cards">
+    <div class="card red"><div class="num">50,000</div><div class="lab">员工使用数据</div><div class="desc">覆盖大规模组织，而非单点试验</div></div>
+    <div class="card"><div class="num">95%</div><div class="lab">查询时间减少</div><div class="desc">数据查询所需时间减少95%</div></div>
+    <div class="card red"><div class="num">SQL</div><div class="lab">被隐藏在后台</div><div class="desc">员工只表达业务问题，Agent完成技术转换</div></div>
+    <div class="card"><div class="num">治理</div><div class="lab">必须先于放大</div><div class="desc">权限、数据口径、审计、错误纠正</div></div>
+  </div>
+  <div class="callout red"><strong>落点：</strong>AI价值不在"会回答"，而在"能连接企业系统、理解业务语义、留下可审计流程、把员工从技术门槛中释放出来"</div>
+</section>
+
+<section class="slide">
+  <h2>趋势四：Agent 越普及，风险治理越不能滞后</h2>
+  <div class="sub">"影子AI"把内部风险从IT问题变成组织治理问题</div>
+  <div class="cards">
+    <div class="card red"><div class="num">$19.5M</div><div class="lab">年均内部风险损失</div><div class="desc">Ponemon/DTEX：平均年化成本</div></div>
+    <div class="card"><div class="num">$10.3M</div><div class="lab">员工疏忽损失</div><div class="desc">疏忽型内部风险成本，同比上升17%</div></div>
+    <div class="card red"><div class="num">53%</div><div class="lab">事件源于疏忽</div><div class="desc">员工疏忽是最常见根因</div></div>
+    <div class="card"><div class="num">362</div><div class="lab">2025 AI事件</div><div class="desc">AI事件由2024年的233起增至362起</div></div>
+  </div>
+  <div style="font-size:13px;font-weight:700;color:var(--accent);margin-top:14px">风险链条</div>
+  <div class="flex-row">
+    <div class="box red"><div class="t">影子AI</div><div class="c">敏感信息输入公开模型</div></div>
+    <div class="box red"><div class="t">不可见使用</div><div class="c">公司看不见流程与输出</div></div>
+    <div class="box red"><div class="t">权责不清</div><div class="c">错误结果无人负责</div></div>
+    <div class="box red"><div class="t">规模化损失</div><div class="c">泄密、合规、声誉、客户信任</div></div>
+  </div>
+  <div class="callout dark"><strong>管理启示：</strong>治理不是"限制AI"，而是让AI在可见、可控、可追责的边界内创造价值</div>
+</section>
+
+<section class="slide">
+  <h2>趋势五：中国政策进入"产业赋能 + 应用治理"双线推进</h2>
+  <div class="sub">一手推动AI+制造落地，一手整治AI应用乱象</div>
+  <div class="flex-row">
+    <div class="box red"><div class="t">产业赋能：2026年"模数共振"行动</div>
+    <div class="c">
+    • 面向钢铁、汽车、航空航天、信息通信、网络安全等20个重点行业/领域<br/>
+    • 每行业梳理不少于5个通识高质量数据集<br/>
+    • 每行业凝集不少于30个高价值场景<br/>
+    • 打造专用模型/特色智能体与"智能体工厂"
+    </div></div>
+    <div class="box blue"><div class="t">应用治理："清朗·整治AI应用乱象"专项行动</div>
+    <div class="c">
+    • 全国范围、为期4个月、分两阶段推进<br/>
+    • 聚焦备案、安全审核、训练语料、数据投毒、内容标识<br/>
+    • 整治虚假信息、数字泄水、假冒仿冒、侵害未成年人等问题
+    </div></div>
+  </div>
+  <div class="cards">
+    <div class="card red"><div class="num">20</div><div class="lab">重点行业/领域</div></div>
+    <div class="card"><div class="num">30+</div><div class="lab">每行业高价值场景</div></div>
+    <div class="card red"><div class="num">4个月</div><div class="lab">专项治理周期</div></div>
+    <div class="card"><div class="num">14类</div><div class="lab">突出问题</div></div>
+  </div>
+</section>
+
+<!-- ===== PART 2: 核心命题 ===== -->
+<section class="slide">
+  <h1 style="text-align:center;margin-top:18vh">Part 2</h1>
+  <h2 style="text-align:center;color:var(--accent)">核心命题 · AI普及 ≠ 组织价值</h2>
+  <div class="sub" style="text-align:center">为什么很多企业 AI 越用越乱？五大错配诊断</div>
+</section>
+
+<section class="slide">
+  <h2>核心观点：AI普及 ≠ 组织价值</h2>
+  <div class="sub">企业真正缺的不是更多AI工具，而是一套"人机兼容"的组织操作系统</div>
+  <div class="cards">
+    <div class="card red"><div class="num">88%</div><div class="lab">组织已常规使用AI</div><div class="desc">McKinsey：至少一个业务职能使用AI</div></div>
+    <div class="card"><div class="num">39%</div><div class="lab">报告企业级EBIT影响</div><div class="desc">多数仍低于5% EBIT贡献</div></div>
+    <div class="card red"><div class="num">5%</div><div class="lab">实现规模化价值</div><div class="desc">BCG：全球仅5%企业达到AI未来型</div></div>
+    <div class="card"><div class="num">60%</div><div class="lab">几乎无实质价值</div><div class="desc">投入很多，但收入/成本收益微弱</div></div>
+  </div>
+  <div class="callout dark"><strong>AI 会放大组织已有能力，也会放大组织已有混乱。</strong></div>
+  <div class="flex-row">
+    <div class="box red"><div class="t">工具层</div><div class="c">买模型、买软件、学提示词</div></div>
+    <div class="box blue"><div class="t">流程层</div><div class="c">嵌入高频流程、形成闭环</div></div>
+    <div class="box green"><div class="t">组织层</div><div class="c">重构角色、权责、绩效与治理</div></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>为什么很多企业 AI 越用越乱？</h2>
+  <div class="sub">不是技术不够强，而是组织机制仍按"纯人类员工"设计</div>
+  <div class="cards">
+    <div class="card red"><div class="num">1</div><div class="lab">任务错配</div><div class="desc">把不该交给AI的任务交给AI</div></div>
+    <div class="card red"><div class="num">2</div><div class="lab">角色错配</div><div class="desc">AI有任务，但没有岗位说明书</div></div>
+    <div class="card red"><div class="num">3</div><div class="lab">权责错配</div><div class="desc">AI能执行，但没有责任归属</div></div>
+    <div class="card red"><div class="num">4</div><div class="lab">流程错配</div><div class="desc">把AI塞进旧流程，环节没减少</div></div>
+    <div class="card red"><div class="num">5</div><div class="lab">绩效错配</div><div class="desc">人机协作后仍只考核人</div></div>
+  </div>
+  <div class="callout"><strong>总诊断：</strong>多数AI失败并非模型能力问题，而是组织没有重新定义任务、角色、权责、流程与绩效</div>
+</section>
+
+<section class="slide">
+  <h2>错配一：任务没有重构</h2>
+  <div class="sub">管理者第一项新能力：判断哪些任务适合交给AI</div>
+  <div class="flex-row">
+    <div class="box red" style="flex:0 0 30%"><div class="t">数据提醒</div><div class="c">AI Agent在OSWorld任务成功率已从12%跃升至约66%，但仍会失败约1/3。<br/><br/>这意味着：AI适合承担可复核、可逆转、可设边界的任务；不适合一开始承担不可逆重大决策</div></div>
+    <div style="flex:1">
+      <h3>任务筛选五问</h3>
+      <table>
+        <tr><th>问题</th><th>判断</th></tr>
+        <tr><td>1. 高频吗？</td><td><span class="tag-chip">越是"是"，越适合优先试点</span></td></tr>
+        <tr><td>2. 标准清晰吗？</td><td><span class="tag-chip">越是"是"，越适合优先试点</span></td></tr>
+        <tr><td>3. 数据充足吗？</td><td><span class="tag-chip">越是"是"，越适合优先试点</span></td></tr>
+        <tr><td>4. 结果可复核吗？</td><td><span class="tag-chip blue">必须有人类复核/兜底</span></td></tr>
+        <tr><td>5. 错误可逆吗？</td><td><span class="tag-chip blue">必须有人类复核/兜底</span></td></tr>
+      </table>
+      <div class="callout"><strong>案例：</strong>销售周报、会议纪要、客服知识库、竞品监测、合同条款初筛，都是更适合第一批试点的AI任务</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>错配二：AI 没有任务说明书</h2>
+  <div class="sub">人类员工入职有JD，AI进入组织也需要 Role Card</div>
+  <div class="flex-row">
+    <div style="flex:1">
+      <h3>AI任务说明书 Agent Role Card</h3>
+      <table>
+        <tr><th>项目</th><th>定义</th></tr>
+        <tr><td>角色名称</td><td>销售周报分析助手</td></tr>
+        <tr><td>服务对象</td><td>销售主管 / 区域总经理</td></tr>
+        <tr><td>输入来源</td><td>CRM、客户跟进记录、会议纪要</td></tr>
+        <tr><td>输出结果</td><td>周报、风险提醒、行动建议</td></tr>
+        <tr><td><b>禁止事项</b></td><td><b>不得承诺客户、不得修改价格政策</b></td></tr>
+        <tr><td>人类负责人</td><td>销售运营经理</td></tr>
+        <tr><td>成功指标</td><td>周报准备时间下降50%；风险提前发现率提升</td></tr>
+      </table>
+    </div>
+    <div style="flex:0 0 28%">
+      <div class="box red"><div class="t">数据背景</div><div class="c">52%的生成式AI使用组织已经把Agent部署到生产场景</div></div>
+      <div class="box blue" style="margin-top:10px"><div class="t">组织问题</div><div class="c">Agent有任务，但没有边界，就会变成管理黑箱</div></div>
+      <div class="box green" style="margin-top:10px"><div class="t">管理动作</div><div class="c">每个Agent上线前，先写一页 Role Card</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>错配三：AI 能执行，但不能承担最终责任</h2>
+  <div class="sub">AI可以参与判断，关键决策必须有人类负责人</div>
+  <h3>人机 RACI 示例：销售风险预警流程</h3>
+  <table>
+    <tr><th>环节</th><th>AI</th><th>员工</th><th>主管</th></tr>
+    <tr><td>数据收集</td><td>R 执行</td><td>I 知情</td><td>I 知情</td></tr>
+    <tr><td>初步分析</td><td>R 生成建议</td><td>C 补充信息</td><td>I 知情</td></tr>
+    <tr><td>结论判断</td><td>C 提供证据</td><td>R 负责判断</td><td>A 最终负责</td></tr>
+    <tr><td>对外发送</td><td>禁止</td><td>R 起草发送</td><td>A 审批</td></tr>
+    <tr><td>异常升级</td><td>自动提醒</td><td>R 处理</td><td>A 决策</td></tr>
+  </table>
+  <div class="callout red"><strong>原则：</strong>AI可以承担任务，但人类必须承担责任；AI可以生成建议，但关键决策必须有人类签字</div>
+</section>
+
+<section class="slide">
+  <h2>错配四：AI 不是旧流程里的插件</h2>
+  <div class="sub">真正的AI流程改造，是把流程拆解、重排并形成闭环</div>
+  <div class="flex-row">
+    <div class="box" style="flex:1;text-align:center;background:#f1f5f9"><div class="t" style="color:var(--text-mute)">低水平用法</div><h3 style="text-align:center;color:var(--text-soft);margin:8px 0">原流程 + AI工具</h3><div class="c" style="text-align:center">多了一个工具，少不了一个环节</div></div>
+    <div class="box red" style="flex:1;text-align:center"><div class="t">高水平用法</div><h3 style="text-align:center;margin:8px 0">流程重构 + Agent闭环</h3><div class="c" style="text-align:center">减少重复环节、强化判断和审计</div></div>
+  </div>
+  <div class="cards">
+    <div class="card red"><div class="num">1</div><div class="lab">AI执行</div><div class="desc">收集 / 整理 / 初稿</div></div>
+    <div class="card"><div class="num">2</div><div class="lab">人类判断</div><div class="desc">复核 / 追问 / 修正</div></div>
+    <div class="card red"><div class="num">3</div><div class="lab">系统记录</div><div class="desc">依据 / 版本 / 证据</div></div>
+    <div class="card"><div class="num">4</div><div class="lab">组织学习</div><div class="desc">模板 / 流程 / 知识库</div></div>
+  </div>
+  <div class="callout"><strong>原则：</strong>AI会议纪要不只是"记笔记"，而是自动形成决策、责任人、截止日期、风险点与后续追踪</div>
+</section>
+
+<section class="slide">
+  <h2>错配五：人机协同后，绩效还只考核人</h2>
+  <div class="sub">AI时代绩效需要考核"人 + AI + 流程"的系统结果</div>
+  <div class="cards">
+    <div class="card"><div class="num">39%</div><div class="lab">企业级EBIT影响</div><div class="desc">AI使用普遍，但财务影响仍有限</div></div>
+    <div class="card red"><div class="num">6%</div><div class="lab">高绩效组织</div><div class="desc">McKinsey定义：AI带来显著企业级价值</div></div>
+    <div class="card"><div class="num">3×</div><div class="lab">工作流重构概率</div><div class="desc">高绩效者更可能重构工作流</div></div>
+    <div class="card red"><div class="num">17%</div><div class="lab">Agent贡献AI价值</div><div class="desc">BCG：2025年Agent约占AI价值17%，2028年预计29%</div></div>
+  </div>
+  <div style="font-size:13px;font-weight:700;color:var(--accent);margin-top:14px">新绩效公式</div>
+  <div class="formula">AI时代绩效 = <em>业务结果</em> × <em>协同效率</em> × <em>风险控制</em> × <em>学习迭代</em></div>
+  <div class="flex-row">
+    <div class="box red"><div class="t">效率</div><div class="c">周期缩短率 / 自动化率</div></div>
+    <div class="box blue"><div class="t">质量</div><div class="c">AI输出采纳率 / 复核通过率</div></div>
+    <div class="box red"><div class="t">风险</div><div class="c">越权、泄密、误导次数</div></div>
+    <div class="box blue"><div class="t">学习</div><div class="c">工作流迭代次数 / 模板沉淀数</div></div>
+  </div>
+</section>
+
+<!-- ===== PART 3: 六个管理设计 ===== -->
+<section class="slide">
+  <h1 style="text-align:center;margin-top:18vh">Part 3</h1>
+  <h2 style="text-align:center;color:var(--accent)">人机兼容组织 · 六个管理设计</h2>
+  <div class="sub" style="text-align:center">从AI工具化到组织协同，需要同时重构六个模块</div>
+</section>
+
+<section class="slide">
+  <h2>人机兼容组织：六个管理设计</h2>
+  <div class="sub">从AI工具化到组织协同，需要同时重构六个模块</div>
+  <div class="cards">
+    <div class="card red"><div class="num">01</div><div class="lab">任务重构</div><div class="desc">什么交给AI，什么保留人类判断</div></div>
+    <div class="card red"><div class="num">02</div><div class="lab">角色重构</div><div class="desc">给AI定义岗位、边界和服务对象</div></div>
+    <div class="card red"><div class="num">03</div><div class="lab">权责重构</div><div class="desc">AI执行，人类负责，关键决策可追责</div></div>
+    <div class="card red"><div class="num">04</div><div class="lab">流程重构</div><div class="desc">把AI嵌入闭环，而非塞进旧流程</div></div>
+    <div class="card red"><div class="num">05</div><div class="lab">绩效重构</div><div class="desc">考核人机系统，不只考核个人</div></div>
+    <div class="card red"><div class="num">06</div><div class="lab">风险治理</div><div class="desc">数据、权限、决策、合规四条红线</div></div>
+  </div>
+  <div class="callout dark"><strong>核心论断：</strong>不是给企业"再多一个AI工具"，而是给管理者一套"人机组织操作系统"</div>
+</section>
+
+<section class="slide">
+  <h2>模块 1：任务重构 | 用"价值-风险"选试点</h2>
+  <div class="sub">先选对场景，再谈技术选型</div>
+  <h3>AI 试点优先级矩阵</h3>
+  <table>
+    <tr><th></th><th style="background:#fef2f2;color:#991b1b">低风险</th><th style="background:#dbeafe;color:#1e40af">高风险</th></tr>
+    <tr><td><b>高频</b></td><td style="background:#fef2f2"><b>优先试点</b><br/>销售周报、会议纪要、客服知识库</td><td><b>谨慎试点</b><br/>合同条款初筛、财务异常提示</td></tr>
+    <tr><td><b>低频</b></td><td>低优先级<br/>偶发低价值任务</td><td style="background:#fee2e2"><b>禁止自动化</b><br/>裁员、投资、价格承诺、敏感人事</td></tr>
+  </table>
+  <div class="flex-row">
+    <div class="box red"><div class="t">案例</div><div class="c">从"销售周报Agent"开始：数据可取、结论可复核、风险可控</div></div>
+    <div class="box blue"><div class="t">失败模式</div><div class="c">一开始让AI做重大决策，往往导致责任不清与信任崩塌</div></div>
+    <div class="box green"><div class="t">管理动作</div><div class="c">先建一个场景筛选表，再启动工具采购</div></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>模块 2：角色重构 | 每个 Agent 都要有边界</h2>
+  <div class="sub">Agent Role Card 把"能力"变成"岗位"</div>
+  <table>
+    <tr><th>项目</th><th>定义</th></tr>
+    <tr><td>使命</td><td>帮助销售主管提前发现业绩风险</td></tr>
+    <tr><td>服务对象</td><td>销售主管、区域总经理</td></tr>
+    <tr><td>输入</td><td>CRM、会议纪要、客户记录</td></tr>
+    <tr><td>输出</td><td>周报、风险提醒、行动建议</td></tr>
+    <tr><td>权限</td><td>读取数据；不得修改价格 / 承诺客户</td></tr>
+    <tr><td>复核</td><td>销售运营经理每周抽查</td></tr>
+    <tr><td>指标</td><td>准备时间下降50%；风险提前发现率提升</td></tr>
+  </table>
+  <div class="callout red"><strong>一句话原则：</strong>AI越强，越要先写清楚"它不做什么"</div>
+</section>
+
+<section class="slide">
+  <h2>模块 3：权责重构 | 建立人机权限分层</h2>
+  <div class="sub">自动化不是放弃控制，而是把控制点设计在关键环节</div>
+  <table>
+    <tr><th>任务类型</th><th>AI权限</th><th>人类角色</th><th>示例</th></tr>
+    <tr><td>信息整理</td><td>可自动完成</td><td>抽查</td><td>会议纪要、资料汇总</td></tr>
+    <tr><td>初步分析</td><td>可生成建议</td><td>必须复核</td><td>客户风险、竞品分析</td></tr>
+    <tr><td>操作执行</td><td>有条件执行</td><td>授权审批</td><td>发送提醒、更新系统</td></tr>
+    <tr><td>重大决策</td><td>不可独立执行</td><td>人类负责</td><td>投资、裁员、价格调整</td></tr>
+    <tr><td>敏感事项</td><td>禁止自动处理</td><td>高层审批</td><td>法务、人事、合规</td></tr>
+  </table>
+  <div class="callout"><strong>管理启示：</strong>管理AI不是"给不给权限"的二元问题，而是按任务风险设计不同授权、复核与升级机制</div>
+</section>
+
+<section class="slide">
+  <h2>模块 4：流程重构 | 建立人机闭环</h2>
+  <div class="sub">把AI输出变成组织学习，而不是一次性答案</div>
+  <div class="cards" style="grid-template-columns:repeat(4,1fr)">
+    <div class="card red"><div class="num">1</div><div class="lab">AI 执行</div><div class="desc">收集、整理、生成初稿</div></div>
+    <div class="card"><div class="num">2</div><div class="lab">人类判断</div><div class="desc">复核、追问、修正</div></div>
+    <div class="card red"><div class="num">3</div><div class="lab">系统记录</div><div class="desc">依据、证据、版本、责任人</div></div>
+    <div class="card"><div class="num">4</div><div class="lab">组织学习</div><div class="desc">模板、流程、知识库、风险清单</div></div>
+  </div>
+  <div class="callout blue">AI生成纪要只是起点；真正有价值的是后续自动追踪责任人、截止日期、风险升级和月底复盘</div>
+  <div class="callout dark"><strong>核心：</strong>流程重构的产物不是"更快的报告"，而是"更强的执行闭环"</div>
+</section>
+
+<section class="slide">
+  <h2>模块 5：绩效重构 | 考核人机系统</h2>
+  <div class="sub">指标要从"个人努力"转为"系统结果"</div>
+  <table>
+    <tr><th>场景</th><th>传统指标</th><th>AI时代新增指标</th></tr>
+    <tr><td>市场内容</td><td>发文数量</td><td>转化率、AI初稿采纳率、审核修改次数</td></tr>
+    <tr><td>销售管理</td><td>拜访次数</td><td>商机推进率、风险提前识别率</td></tr>
+    <tr><td>客服</td><td>响应时长</td><td>一次解决率、复杂问题升级准确率</td></tr>
+    <tr><td>HR招聘</td><td>招聘周期</td><td>简历筛选准确率、候选人体验、合规风险</td></tr>
+    <tr><td>财务</td><td>报表及时性</td><td>异常识别率、误报率、审计可追踪性</td></tr>
+  </table>
+  <div class="flex-row" style="margin-top:14px">
+    <div class="box red" style="flex:0 0 18%;text-align:center"><div class="t" style="font-size:24px">4 维</div><div class="c">效率 / 质量 / 风险 / 学习</div></div>
+    <div class="box blue" style="flex:1"><div class="t">原则</div><div class="c">不要考核"用了多少AI"，而要考核"是否缩短周期、提升质量、降低风险、沉淀能力"</div></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>模块 6：风险治理 | 四条红线</h2>
+  <div class="sub">不是限制AI，而是让AI可控地创造价值</div>
+  <div class="flex-row">
+    <div class="box red"><div class="t">数据红线</div><div class="c"><b>哪些数据不能喂给外部AI</b><br/>客户隐私、商业机密、未公开财务数据</div></div>
+    <div class="box red"><div class="t">权限红线</div><div class="c"><b>AI不能独立执行哪些操作</b><br/>发邮件、改价格、删数据、创建账号</div></div>
+    <div class="box red"><div class="t">决策红线</div><div class="c"><b>哪些决策必须由人类负责</b><br/>投资、裁员、重大合同、合规判断</div></div>
+    <div class="box red"><div class="t">合规红线</div><div class="c"><b>哪些法律政策不能突破</b><br/>备案、训练语料、合成内容标识、未成年人保护</div></div>
+  </div>
+  <div class="callout dark"><strong>成熟企业不是不用AI，而是知道在哪里放权、在哪里收权、在哪里必须留下证据</strong></div>
+</section>
+
+<!-- ===== PART 4: 案例与领导者进化 ===== -->
+<section class="slide">
+  <h1 style="text-align:center;margin-top:18vh">Part 4</h1>
+  <h2 style="text-align:center;color:var(--accent)">案例 & 领导者进化</h2>
+  <div class="sub" style="text-align:center">从案例复盘到领导力升级，从90天路线到立即行动</div>
+</section>
+
+<section class="slide">
+  <h2>案例复盘：客服Agent 带来的不是"替代人"，而是"重塑岗位"</h2>
+  <div class="sub">AI先提升一线效率，随后改变培训、监督与销售转化</div>
+  <div class="cards">
+    <div class="card red"><div class="num">14%</div><div class="lab">客服生产率提升</div><div class="desc">NBER：AI辅助使客服平均每小时解决数提升</div></div>
+    <div class="card"><div class="num">35%</div><div class="lab">低经验员工提升</div><div class="desc">NBER digest：提及低技能/低经验员工提升更明显</div></div>
+    <div class="card red"><div class="num">28,000</div><div class="lab">Verizon 客服团队</div><div class="desc">AI助手帮助实时回答客户问题</div></div>
+    <div class="card"><div class="num">~40%</div><div class="lab">服务团队销售增长</div><div class="desc">Reuters：部署后销售几乎增长40%</div></div>
+  </div>
+  <div class="flex-row">
+    <div class="box red"><div class="t">旧岗位</div><div class="c">回答客户问题</div></div>
+    <div class="box blue"><div class="t">新岗位</div><div class="c">监督AI建议、处理例外、转化销售机会</div></div>
+    <div class="box green"><div class="t">新管理</div><div class="c">训练知识库、评估AI输出、设计升级路径</div></div>
+  </div>
+  <div class="callout"><strong>管理启示：</strong>AI不是简单减少客服人数，而是把一线员工从"记忆答案"推向"判断、沟通、销售与异常处理"</div>
+</section>
+
+<section class="slide">
+  <h2>案例复盘：具身智能把 AI 带入物理世界</h2>
+  <div class="sub">AI从"数字副驾"进化为"产业工人"，组织管理也必须进入现场</div>
+  <div class="cards">
+    <div class="card red"><div class="num">高端制造</div><div class="lab">检测/装配/工艺优化</div><div class="desc">AI与机械臂、工业视觉、工艺数据结合</div></div>
+    <div class="card"><div class="num">物流仓储</div><div class="lab">AMR/分拣/调度</div><div class="desc">从路径规划到库存周转</div></div>
+    <div class="card red"><div class="num">变电站</div><div class="lab">巡检/异常识别</div><div class="desc">AI进入安全要求高的现场场景</div></div>
+    <div class="card"><div class="num">20 行业</div><div class="lab">AI+制造任务推进</div><div class="desc">模数共振行动面向20个重点行业/领域</div></div>
+  </div>
+  <div style="font-size:13px;font-weight:700;color:var(--accent);margin-top:14px">现场AI的管理难点</div>
+  <div class="flex-row">
+    <div class="box red"><div class="t">安全责任</div><div class="c">人身、设备、生产连续性</div></div>
+    <div class="box blue"><div class="t">数据闭环</div><div class="c">现场数据如何回流训练</div></div>
+    <div class="box red"><div class="t">人机协同</div><div class="c">人、机器人、系统如何交接</div></div>
+    <div class="box blue"><div class="t">标准复制</div><div class="c">从一个车间复制到多个基地</div></div>
+  </div>
+  <div class="callout"><strong>管理启示：</strong>当AI进入现场，领导者要管理的不只是算法，而是"安全、标准、数据、人员、设备"的复合系统</div>
+</section>
+
+<section class="slide">
+  <h2>领导者进化：从管控者到系统设计者</h2>
+  <div class="sub">未来优秀领导者，不是最会使用AI的人，而是最会设计人机协同系统的人</div>
+  <table>
+    <tr><th>编号</th><th>领导力升级</th><th>核心追问</th></tr>
+    <tr><td><b>1</b></td><td>重新定义问题</td><td>任务由人做、AI做，还是人机协同做？</td></tr>
+    <tr><td><b>2</b></td><td>重新设计流程</td><td>哪里自动化、哪里保留人工判断？</td></tr>
+    <tr><td><b>3</b></td><td>重新划分权责</td><td>AI犯错后，谁负责？谁复核？</td></tr>
+    <tr><td><b>4</b></td><td>重新塑造学习</td><td>提示词、工作流、失败案例如何沉淀？</td></tr>
+    <tr><td><b>5</b></td><td>重新理解领导力</td><td>管理人，也管理人机组织系统</td></tr>
+  </table>
+  <div class="callout dark"><strong>一句话：</strong>AI时代，领导力的核心不是"控制更多人"，而是"设计更好的系统"</div>
+</section>
+
+<section class="slide">
+  <h2>90 天落地路线：从一个流程开始</h2>
+  <div class="sub">不要全公司铺开；先用一个低风险、高价值流程证明组织机制</div>
+  <div class="cards" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card red"><div class="num">第1-30天</div><div class="lab" style="font-size:18px;color:var(--accent)">选场景，定边界</div><div class="desc">候选场景筛选；写AI岗位说明书；明确禁止事项</div></div>
+    <div class="card"><div class="num">第31-60天</div><div class="lab" style="font-size:18px;color:var(--accent-2)">跑流程，建机制</div><div class="desc">设计人机流程；建立复核、审计、异常升级机制</div></div>
+    <div class="card red"><div class="num">第61-90天</div><div class="lab" style="font-size:18px;color:var(--accent)">看指标，做复制</div><div class="desc">评估效率、质量、风险、学习；形成推广决策</div></div>
+  </div>
+  <div class="callout dark" style="text-align:center"><strong>90天交付物：</strong>一个成熟流程、一套可复制模板、一份是否推广的决策报告</div>
+</section>
+
+<section class="slide">
+  <h2>下周就能做的三个管理动作</h2>
+  <div class="sub">公开课结束后，先问管理团队这三个问题</div>
+  <div class="flex-row" style="flex-direction:column">
+    <div class="box red"><div class="t">01</div><h3 style="margin:4px 0">我们有哪些流程已经被员工私下用AI改变了？</h3><div class="c">先识别"影子AI"，不要等风险发生后再治理</div></div>
+    <div class="box blue"><div class="t">02</div><h3 style="margin:4px 0;color:var(--blue-tx)">哪些AI使用场景现在没有权责边界？</h3><div class="c">先把责任人、复核人、审批人写清楚</div></div>
+    <div class="box red"><div class="t">03</div><h3 style="margin:4px 0">哪一个低风险、高频流程可以做90天试点？</h3><div class="c">先拿出一个可衡量成果，再复制到其他部门</div></div>
+  </div>
+  <div class="callout red"><strong>管理者的第一步不是采购，而是看见、界定、试点</strong></div>
+</section>
+
+<!-- End -->
+<section class="slide end">
+  <h1>结语</h1>
+  <h1 style="margin-top:18px;font-size:clamp(24px,3.4vw,42px);line-height:1.4">企业不是缺 AI 工具，<br/>而是缺一套<span class="accent-q">能够驾驭 AI 的组织操作系统</span></h1>
+  <div style="margin-top:24px;font-size:clamp(15px,1.4vw,20px);color:#cbd5e1;line-height:1.7">AI 最终会制造混乱，还是创造新的组织能力，<br/>取决于领导者是否完成进化</div>
+  <div style="display:flex;gap:14px;margin-top:32px;flex-wrap:wrap;justify-content:center">
+    <div style="background:rgba(255,255,255,.12);padding:14px 28px;border-radius:12px;font-weight:600">判断与责任</div>
+    <div style="background:rgba(255,255,255,.12);padding:14px 28px;border-radius:12px;font-weight:600">执行与放大</div>
+    <div style="background:rgba(255,255,255,.12);padding:14px 28px;border-radius:12px;font-weight:600">边界与闭环</div>
+  </div>
+</section>
+
+</div>
+
+<div class="nav">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 28</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let i = 0;
+const total = slides.length;
+const counter = document.getElementById('counter');
+const progress = document.getElementById('progress');
+function show(n){
+  slides[i].classList.remove('active');
+  i = (n + total) % total;
+  slides[i].classList.add('active');
+  counter.textContent = (i+1)+' / '+total;
+  progress.style.width = ((i+1)/total*100)+'%';
+}
+document.getElementById('prev').onclick = () => show(i-1);
+document.getElementById('next').onclick = () => show(i+1);
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key===' ') show(i+1);
+  if(e.key==='ArrowLeft') show(i-1);
+});
+counter.textContent = '1 / '+total;
+progress.style.width = (1/total*100)+'%';
+</script>
+</body>
+</html>
